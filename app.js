@@ -1,7 +1,7 @@
 const Koa = require('koa')
 const bodyParser = require('koa-bodyparser')
 // const router = require('koa-router')()
-const controller = require('./controller');
+const controller = require('./controllers');
 const app = new Koa()
 const {
   main,
@@ -10,6 +10,11 @@ const {
 } = require('./middleware/index.js')
 
 
+const model = require('./models');
+// model.sync()
+(async()=>{
+  await model.sync()
+})()
 
 app.use(timer)
 app.use(_log)
