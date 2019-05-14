@@ -11,17 +11,10 @@ const {
 
 
 const model = require('./models');
-<<<<<<< HEAD
 // model.sync()
 (async()=>{
   await model.sync()
 })()
-=======
-model.sync()
-// (async()=>{
-//   await model.sync()()
-// })()
->>>>>>> 9b46f588721767c347f9eaa42bd16d9dc3727f9b
 
 app.use(timer)
 app.use(_log)
