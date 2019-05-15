@@ -42,15 +42,15 @@ function defineModel(name, attributes) {
 
   attrs.createdAt = {
     type: Sequelize.BIGINT,
-    allowNull: false
+    allowNull: true
   };
   attrs.updatedAt = {
     type: Sequelize.BIGINT,
-    allowNull: false
+    allowNull: true
   };
   attrs.version = {
     type: Sequelize.BIGINT,
-    allowNull: false
+    allowNull: true
   };
   return sequelize.define(name, attrs, {
     tableName: name,
