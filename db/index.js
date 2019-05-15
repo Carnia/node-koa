@@ -42,15 +42,15 @@ function defineModel(name, attributes) {
 
   attrs.createdAt = {
     type: Sequelize.BIGINT,
-    allowNull: true
+    allowNull: false
   };
   attrs.updatedAt = {
     type: Sequelize.BIGINT,
-    allowNull: true
+    allowNull: false
   };
   attrs.version = {
     type: Sequelize.BIGINT,
-    allowNull: true
+    allowNull: false
   };
   return sequelize.define(name, attrs, {
     tableName: name,
@@ -67,8 +67,45 @@ function defineModel(name, attributes) {
           obj.version = 0;
         } else {
           obj.updatedAt = Date.now();
+          obj.version = obj.version || 0;
           obj.version++;
         }
+      },
+      beforeUpdate: function(obj) {
+        debugger;
+      },
+      afterValidate(instance, options, fn) {
+        // debugger;
+      },
+      validationFailed(instance, options, error, fn) {
+        debugger;
+      },
+      beforeCreate(instance, options, fn) {
+        // debugger;
+      },
+      beforeDestroy(instance, options, fn) {
+        debugger;
+      },
+      beforeUpdate(instance, options, fn) {
+        debugger;
+      },
+      afterCreate(instance, options, fn) {
+        // debugger;
+      },
+      afterDestroy(instance, options, fn) {
+        debugger;
+      },
+      afterUpdate(instance, options, fn) {
+        debugger;
+      },
+      afterBulkCreate(instances, options, fn) {
+        debugger;
+      },
+      afterBulkDestroy(options, fn) {
+        // debugger;
+      },
+      afterBulkUpdate(options, fn) {
+        // debugger;
       }
     }
   });

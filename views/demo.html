@@ -1,14 +1,32 @@
 <%- include('public/header.ejs', {pageName: null}); %>
+
 <body>
-  <h1>hello</h1>
-  <div>
-    <table border="1" style='text-align: center'>
+  <script src=https://unpkg.com/art-template@4.13.2/lib/template-web.js> </script> <h1>hello</h1>
+  <input type=text id=input1 placeholder=搜索email或者姓名 />
+  <label for="p">选择页码</label>
+  <select name="p" id="p">
+    <option value="1" selected>1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+  </select>
+  <label for="s">选择显示条数</label>
+  <select name="s" id="s">
+    <option value="10" selected>10</option>
+    <option value="20">20</option>
+    <option value="100">100</option>
+  </select>
+  <button id=btn>查询</button>
+  <br>
+  <br>
+  <div id=result>
+    <table border="1" cellspacing="0" cellpadding="10" style='text-align: center'>
       <thead>
         <tr>
           <th>id</th>
           <th>email</th>
           <th>name</th>
           <th>gender</th>
+          <th>edit</th>
         </tr>
       </thead>
       <tbody>
@@ -17,38 +35,213 @@
             <td><%= user.rows[i].id%></td>
             <td><%= user.rows[i].email%></td>
             <td><%= user.rows[i].name%></td>
-            <td><%= user.rows[i].gender%></td>
+            <td><%= user.rows[i].gender?'女':'男'%></td>
+            <td>
+              <button onclick='edit(<%- user.rows[i].id %>)'>编辑</button>
+              <button onclick='destroy(<%- user.rows[i].id %>)'>删除</button>
+            </td>
           </tr>
         <% } %>
       </tbody>
     </table>
   </div>
-  <input type=text id=input1 placeholder=搜索email或者姓名 />
-  <button id=btn>ajax</button>
-  <div id=result></div>
+  <br> 
+  <br> 
+  <form id=form1 onsubmit="return false">
+    <label for="email">email
+      <input type="text" name="email" id="email">
+    </label>
+    <br>
+    <label for="name">name
+      <input type="text" name="name" id="name">
+    </label>
+    <br>
+    <label for="tel">tel
+      <input type="text" name="tel" id="tel">
+    </label>
+    <br>
+    <label for="gender">gender
+      <select name="gender" id="gender">
+        <option value="0" selected>男</option>
+        <option value="1">女</option>
+      </select>
+    </label>
+    <input type="hidden" name="id" value="" id=id>
+    <input type=button onclick="putEdit()" value="提交修改" />
+    <input type=button onclick="add()" value="新增" />
+  </form>
   <script>
+    let store =<%- JSON.stringify(user) %>;
+    function edit(id) {
+      let v = store.rows.find((v) => {
+        return v.id == id
+      })
+      document.querySelector('#id').value = v.id
+      document.querySelector('#name').value = v.name
+      document.querySelector('#tel').value = v.tel
+      document.querySelector('#email').value = v.email
+      document.querySelector('#gender').value = Number(v.gender)
+    }
+    function destroy(id) {
+      fetch('/delete', {
+        method: 'DELETE', // or 'PUT'
+        body: `{"id":${id}}`, // data can be string or {object}!
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        })
+      }).then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(res => {
+          console.log(res)
+        })
+    }
+    function add() {
+      fetch('/add', {
+        method: 'PUT', // or 'PUT'
+        body: serialize(form1), // data can be string or {object}!
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        })
+      }).then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(res => {
+          console.log(res)
+        })
+    }
+    function putEdit() {
+      fetch('/edit', {
+        method: 'PUT', // or 'PUT'
+        body: serialize(form1), // data can be string or {object}!
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        })
+      }).then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(res => {
+          console.log(res)
+        })
+    }
+    let form1 = document.querySelector('#form1')
     let input1 = document.querySelector('#input1')
     let btn = document.querySelector('#btn')
     let result = document.querySelector('#result')
+    let pageNum = document.querySelector('#p')
+    let pageSize = document.querySelector('#s')
     btn.onclick = () => {
       let data = {
         q: input1.value,
-        p: 1,
-        s: 10
+        p: pageNum.value,
+        s: pageSize.value
       }
       fetch('/', {
-          method: 'POST', // or 'PUT'
-          body: JSON.stringify(data), // data can be string or {object}!
-          headers: new Headers({
-            'Content-Type': 'application/json'
-          })
-        }).then(res => res.json())
+        method: 'POST', // or 'PUT'
+        body: JSON.stringify(data), // data can be string or {object}!
+        headers: new Headers({
+          'Content-Type': 'application/json'
+        })
+      }).then(res => res.json())
         .catch(error => console.error('Error:', error))
-        .then(response => {
-          console.log(JSON.stringify(response));
-          result.innerHTML = JSON.stringify(response)
+        .then(res => {
+          let tp = `
+            <div>共{{user.count||0}}条记录</div>
+            <table border="1" cellspacing="0" cellpadding="10" style='text-align: center'>
+              <thead>
+                <tr>
+                  <th>id</th>
+                  <th>email</th>
+                  <th>name</th>
+                  <th>gender</th>
+                  <th>edit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{ each user.rows }}
+                  <tr>
+                    <td>{{ $value.id}}</td>
+                    <td>{{ $value.email}}</td>
+                    <td>{{ $value.name}}</td>
+                    <td>{{ $value.gender?'女':'男'}}</td>
+                    <td>
+                      <button onclick='edit({{ $value.id }})'>编辑</button>
+                      <button onclick='destroy({{ $value.id }})'>删除</button>
+                    </td>
+                  </tr>
+                {{ /each }}
+              </tbody>
+            </table>
+          `
+          Object.assign(store, res)
+          result.innerHTML = template.render(tp, { user: res })
         });
     }
+
+    function serialize(form) {
+      var res = {},   //存放结果的数组
+        current = null, //当前循环内的表单控件
+        i,  //表单NodeList的索引
+        len, //表单NodeList的长度
+        k,  //select遍历索引
+        optionLen,  //select遍历索引
+        option, //select循环体内option
+        optionValue;    //select的value
+      // form = this;    //用form变量拿到当前的表单，易于辨识
+
+      for (i = 0, len = form.elements.length; i < len; i++) {
+
+        current = form.elements[i];
+
+        //disabled表示字段禁用，需要区分与readonly的区别
+        if (current.disabled) continue;
+
+        switch (current.type) {
+          //可忽略控件处理
+          case "file":    //文件输入类型
+          case "submit":  //提交按钮
+          case "button":  //一般按钮
+          case "image":   //图像形式的提交按钮
+          case "reset":   //重置按钮
+          case undefined: //未定义
+            break;
+          //select控件
+          case "select-one":
+          case "select-multiple":
+            if (current.name && current.name.length) {
+              for (k = 0, optionLen = current.options.length; k < optionLen; k++) {
+                option = current.options[k];
+                optionValue = "";
+                if (option.selected) {
+                  if (option.hasAttribute) {
+                    optionValue=option.value
+                    optionValue = optionValue!==undefined&&optionValue!=null ? option.value : option.text
+                  } else {
+                    //低版本IE需要使用特性 的specified属性，检测是否已规定某个属性
+                    optionValue = option.attributes('value').specified ? option.value : option.text;
+                  }
+                  res[current.name] = optionValue;
+                  break;
+                }
+                res[current.name] = optionValue;
+              }
+            }
+            break;
+
+          //单选，复选框
+          case "radio":
+          case "checkbox":
+            //这里有个取巧 的写法，这里的判断是跟下面的default相互对应。
+            //如果放在其他地方，则需要额外的判断取值
+            if (!current.checked) break;
+
+          default:
+            //一般表单控件处理
+            if (current.name && current.name.length) {
+              res[current.name] = current.value;
+            }
+        }
+      }
+      return JSON.stringify(res);
+    }
+
   </script>
 </body>
 
