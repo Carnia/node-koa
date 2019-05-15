@@ -4,27 +4,24 @@ function log() {
   console.log("【controller】", ...arguments);
 }
 // 这里可以用sync是因为启动时只运行一次，不存在性能问题:
-function addMapping(router, mapping) {
-  for (var url in mapping) {
-    if (url.startsWith("GET ")) {
-      var path = url.substring(4);
-      router.get(path, mapping[url]);
-      log(`register URL mapping: GET ${path}`);
-    } else if (url.startsWith("POST ")) {
-      var path = url.substring(5);
-      router.post(path, mapping[url]);
-      log(`register URL mapping: POST ${path}`);
-    } else if (url.startsWith("PUT ")) {
-      var path = url.substring(4);
-      router.put(path, mapping[url]);
-      log(`register URL mapping: PUT ${path}`);
-    } else if (url.startsWith("DELETE ")) {
-      var path = url.substring(7);
-      router.delete(path, mapping[url]);
-      log(`register URL mapping: DELETE ${path}`);
-    } else {
-      log(`【error】invalid URL: ${url}`);
-    }
+function addMapping(router, controllerMap) {
+  //mtUrl是类似 DELETE /delete的字符串，由方法名和具体地址组成
+  for (var mtUrl in controllerMap) {
+    let method = mtUrl.split(" ")[0];
+    let path = mtUrl.substring(method.length + 1);
+    router[method.toLowerCase()](path, controllerMap[mtUrl]);
+    log(`register URL controllerMap: ${method} ${path}`);
+    // if (mtUrl.startsWith("GET ")) {
+    //   var path = mtUrl.substring(4);
+    //   router.get(path, controllerMap[mtUrl]);
+    //   log(`register URL controllerMap: GET ${path}`);
+    // } else if (mtUrl.startsWith("POST ")) {
+    //   var path = mtUrl.substring(5);
+    //   router.post(path, controllerMap[mtUrl]);
+    //   log(`register URL controllerMap: POST ${path}`);
+    // } else {
+    //   log(`【error】invalid URL: ${mtUrl}`);
+    // }
   }
 }
 
@@ -37,8 +34,8 @@ function addControllers(router, dirName) {
 
   for (var f of js_files) {
     log(`process controller: ${f}...`);
-    let mapping = require(`${path}/${f}`);
-    addMapping(router, mapping);
+    let controllerMap = require(`${path}/${f}`);
+    addMapping(router, controllerMap);
   }
 }
 
