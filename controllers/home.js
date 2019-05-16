@@ -25,7 +25,7 @@ let fn_home = async (ctx, next) => {
     //   [Op.or]: [{email: '1@qq.com',},{email: '2@qq.com',}]
     // }
   });
-  await ctx.render("demo", { user });
+  await ctx.render("demo", { user });//调用ejs注册的render方法后不需要修改响应体了
   // ctx.response.body = ``
 };
 let fn_home_query = async (ctx, next) => {
