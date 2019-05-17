@@ -1,7 +1,11 @@
 <%- include('public/header.ejs', {pageName: null}); %>
 
 <body>
-  <h1>文件上传进度监听demo（前端监听，非后台返回）</h1>
+  <h4>
+    <a href="/">增删改查demo</a>
+    <span>文件上传demo</span>
+  </h4>
+  <h5>（前端监听，非后台返回）</h5>
   <input type="file" name="file" multiple id="file">
   <button onclick="uploadFiles()">提交</button>
   <br>

@@ -1,7 +1,7 @@
 const fileSys=require('../utils/fileSys.js')
 
 let fn_file = async (ctx, next) => {
-  await ctx.render("fileDemo");
+  await ctx.render("file");
 };
 let fn_upload = async (ctx, next) => {
   // 上传单个文件
@@ -17,7 +17,7 @@ let fn_uploadFiles = async (ctx, next) => {
 };
 
 module.exports = {
-  "GET /fileDemo": fn_file,
+  "GET /file": fn_file,
   "POST /uploadFile": fn_upload,
   "POST /uploadFiles": fn_uploadFiles
 };
