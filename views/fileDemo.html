@@ -1,0 +1,70 @@
+<%- include('public/header.ejs', {pageName: null}); %>
+
+<body>
+  <h1>文件上传进度监听demo（前端监听，非后台返回）</h1>
+  <input type="file" name="file" multiple id="file">
+  <button onclick="uploadFiles()">提交</button>
+  <br>
+  <br>
+  <br>
+  <script>
+    let $files = document.querySelector('#file')
+
+    function uploadFiles() {
+      let files = $files.files //web端的 files是 FileList类型的类数组对象，循环需要转换成数组
+      if (Object.prototype.toString.call(files).slice(8, -1) === 'FileList') {
+        [].slice.call(files).forEach((file) => {
+          console.log(1, file)
+          upload(file)
+        })
+      } else {
+        console.log(2, files)
+        upload(files)
+      }
+    }
+
+    function upload(file) {
+      var formData = new FormData();
+      formData.append('keepName', false);
+      formData.append('file', file);
+      var xhr = new XMLHttpRequest();
+      xhr.timeout = 60000;
+      xhr.ontimeout = function (event) {
+        console.log('60s,请求超时！');
+      }
+      xhr.onprogress = updateProgress;
+      let randomId = '_' + (Math.random() * 100000000).toFixed(0)
+      xhr.upload.onprogress = (e) => {
+        updateProgress(e, randomId, file.name)
+      };
+      xhr.open('POST', '/uploadFile');
+      xhr.send(formData);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          console.log(xhr.responseText);
+        } else {
+          console.log(xhr.statusText);
+        }
+      };
+    }
+
+    function updateProgress(event, id, name) {
+      if (name && event.lengthComputable) {
+        $showProgress = document.querySelector('#' + id)
+        if (!$showProgress) {
+          $showProgress = document.createElement('div')
+          $br = document.createElement('br')
+          $showProgress.setAttribute("id", id);
+          $showProgress.setAttribute("title", name);
+          document.body.appendChild($showProgress)
+          document.body.appendChild($br)
+        }
+        var percentComplete = name + "  ======>  " + (event.loaded / event.total * 100).toFixed(2) + '%';
+        console.log(name, percentComplete)
+        $showProgress.innerHTML = percentComplete
+      }
+    }
+  </script>
+</body>
+
+</html>

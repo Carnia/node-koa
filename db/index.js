@@ -114,6 +114,7 @@ module.exports = {
   defineModel,
   STRING: Sequelize.STRING,
   BOOLEAN: Sequelize.BOOLEAN,
+  BLOB:Sequelize.BLOB,
   sync: sequelize.sync.bind(sequelize),
   Op: Sequelize.Op
 };
