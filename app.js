@@ -50,4 +50,4 @@ app.use(last);
 app.use(bodyParser()); //以json形式将非GET类型的请求参数request.body挂载到ctx上
 app.use(controller()); //使用控制器统一管理路由
 app.listen(9000);
-console.log("app start");
+console.log("app start ：localhost:9000");
