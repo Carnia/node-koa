@@ -3,6 +3,7 @@ require("./global"); //加载全局变量
 const path = require("path");
 const Koa = require("koa");
 const bodyParser = require("koa-bodyparser");
+const handleStatic = require('koa-static-match-path')
 const views = require("koa-views");
 const serve = require("koa-static");
 const app = new Koa();
@@ -52,11 +53,11 @@ app.use(
     // extension:'ejs',//应用ejs模板引擎
   })
 );
-
 app.use(timer);
 app.use(log);
 app.use(last);
 app.use(bodyParser()); //以json形式将非GET类型的请求参数request.body挂载到ctx上
 app.use(controller()); //使用控制器统一管理路由
+app.use(handleStatic(path.join(__dirname,'./public/'),'static'))
 app.listen(9000);
 console.log("app start ：localhost:9000");
