@@ -1,3 +1,6 @@
+// 已经上传到npm，插件名koa-static-match-path
+// https://github.com/Carnia/koa-static-match-path
+
 const fs = require("fs");
 const path = require("path");
 const mimes = {
