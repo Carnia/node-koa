@@ -1,11 +1,13 @@
 require("./global"); //加载全局变量
 
+const path = require("path");
 const Koa = require("koa");
 const bodyParser = require("koa-bodyparser");
 const views = require("koa-views");
+const serve = require("koa-static");
+const app = new Koa();
 
 const controller = require("./controllers"); // const router = require('koa-router')()
-const app = new Koa();
 const { last, log, timer } = require("./middleware");
 
 // 数据库同步
@@ -17,6 +19,11 @@ const model = require("./models");
   //带上force会检查数据库，并根据models里面的模型定义强制生成新的表结构
   //一般是单独抽出来成一个指令，项目第一次初始化的时候执行一次，这里就懒得抽，平时用注释切换就行。
 })();
+
+// 静态资源服务
+// 可以同时使用多个koa-static实例去对应多个文件夹（注意多文件夹同文件名问题）
+const staticServe1 = serve(path.join(__dirname,"public"));
+app.use(staticServe1);
 
 // 文件上传处理中间件
 const koaBody = require("koa-body");
@@ -37,6 +44,7 @@ app.use(
     }
   })
 );
+
 // 模板引擎中间件
 app.use(
   views("views", {
@@ -44,6 +52,7 @@ app.use(
     // extension:'ejs',//应用ejs模板引擎
   })
 );
+
 app.use(timer);
 app.use(log);
 app.use(last);

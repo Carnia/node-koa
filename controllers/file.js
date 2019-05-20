@@ -6,8 +6,11 @@ let fn_file = async (ctx, next) => {
 let fn_upload = async (ctx, next) => {
   // 上传单个文件
   const file = ctx.request.files.file; // 获取上传文件
-  fileSys.handleFileUpload(ctx)
-  ctx.body=file.path
+  await fileSys.handleFileUpload(ctx)
+  ctx.body={
+    state:1,
+    url:file.path.split('public').pop()
+  }
 };
 let fn_uploadFiles = async (ctx, next) => {
   // 上传多个文件

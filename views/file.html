@@ -36,7 +36,7 @@
       xhr.ontimeout = function (event) {
         console.log('60s,请求超时！');
       }
-      xhr.onprogress = updateProgress;
+      xhr.onprogress = updateProgress;//这是下载的progress
       let randomId = '_' + (Math.random() * 100000000).toFixed(0)
       xhr.upload.onprogress = (e) => {
         updateProgress(e, randomId, file.name)
@@ -45,21 +45,27 @@
       xhr.send(formData);
       xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) {
-          console.log(xhr.responseText);
+          let res=JSON.parse(xhr.responseText)
+          let img=document.createElement('img')
+          img.setAttribute("title", file.name);
+          img.setAttribute('src',res.url)
+          img.setAttribute('width',100)
+          img.setAttribute('height',100)
+          document.querySelector('#' + randomId).appendChild(img)
+          console.log(res)
         } else {
           console.log(xhr.statusText);
         }
       };
     }
 
-    function updateProgress(event, id, name) {
+    function updateProgress(event, randomId, name) {
       if (name && event.lengthComputable) {
-        $showProgress = document.querySelector('#' + id)
+        $showProgress = document.querySelector('#' + randomId)
         if (!$showProgress) {
           $showProgress = document.createElement('div')
           $br = document.createElement('br')
-          $showProgress.setAttribute("id", id);
-          $showProgress.setAttribute("title", name);
+          $showProgress.setAttribute("id", randomId);
           document.body.appendChild($showProgress)
           document.body.appendChild($br)
         }
