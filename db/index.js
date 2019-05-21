@@ -3,7 +3,7 @@ function log() {
   console.log("【db】", ...arguments);
 }
 log("init sequelize...");
-const config = require("../config").db;
+const config = require("../config/test").db;
 var sequelize = new Sequelize(
   config.database,
   config.username,
