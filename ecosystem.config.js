@@ -1,4 +1,4 @@
-let logTime = new Date().toLocaleDateString()
+let logTime = new Date().toISOString().slice(0,10)
 let testConfig= require('./config/test')
 console.log(`load ecosystem.config.js`,logTime)
 module.exports = {
