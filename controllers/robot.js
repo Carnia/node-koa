@@ -1,8 +1,9 @@
 
 module.exports= {
 	"GET /robot.txt":async  (ctx,next)=>{
-		ctx.body=`User-agent: *
-			Disallow: /`
+		ctx.body=
+`User-agent: *
+Disallow: /`
 		next()
 	},	 
 };
