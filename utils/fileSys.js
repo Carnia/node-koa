@@ -69,7 +69,8 @@ async function creatFile(file, keepName = false) {
         name: file.name,
         size: size
       });
-      console.log(`存储完毕：(${file.name})：数据库id：${ result.id}, 本地路径: ${file.path.split('public').pop()}`);
+      // console.log(`存储完毕：(${file.name})：数据库id：${ result.id}, 本地路径: ${file.path.split('public').pop()}`);
+      console.log(`存储完毕：(${file.name})：数据库id：${ result.id}, 本地路径: ${file.path}, 显示路径: ${file.outPutPath}`);
       // 删除临时文件
       fs.unlinkSync(tempPath);
       resolve()
@@ -77,11 +78,15 @@ async function creatFile(file, keepName = false) {
     // 获取文件后缀
     const ext = getUploadFileExt(file.name);
     // 最终要保存到的文件夹目录
-    const dir = path.join(__dirname, `../public/upload/${getUploadDirName()}`);
+    // const dir0 = path.join(__dirname, `../public/upload/${getUploadDirName()}`);
+    const dirName=getUploadDirName()
+    const fileName=keepName ? file.name : getUploadFileName(ext)
+    const dir = path.join(UPLOADPATH, dirName);
     // 检查文件夹是否存在如果不存在则新建文件夹
     checkDirExist(dir);
     // 重新覆盖 file.path 属性
-    file.path = `${dir}/${keepName ? file.name : getUploadFileName(ext)}`;
+    file.outPutPath = `${UPLOADPATH2.replace(STATICROOTDIR,STATICROOTPATH.slice(1))}${dirName}/${fileName}`;
+    file.path = `${dir}/${fileName}`;
     // 创建可写流
     const upStream = fs.createWriteStream(file.path);
     // 可读流通过管道写入可写流

@@ -9,7 +9,7 @@ let fn_upload = async (ctx, next) => {
   await fileSys.handleFileUpload(ctx)
   ctx.body={
     state:1,
-    url:file.path.split('public').pop()
+    url:file.outPutPath
   }
 };
 let fn_uploadFiles = async (ctx, next) => {
