@@ -24,6 +24,10 @@
                                              └──┴──┘       └──┴──┘ 
                                                  神兽保佑 
                                                  代码无BUG! 
+`
+    );
+    false&&console.log(
+      `
 
                                 MMMMM
                                   MMMMMM
@@ -155,7 +159,7 @@
                            Carnia:gogogo                        MMMMMMMMMMMMMMMMMM
                                                                  MMMMMMMMMMMMMMM
 
-`
+    `
     )
   }
 )()
