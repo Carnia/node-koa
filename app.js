@@ -5,7 +5,10 @@ const Koa = require("koa");
 const bodyParser = require("koa-bodyparser");
 const handleStatic = require('koa-static-match-path')
 const views = require("koa-views");
-const serve = require("koa-static");
+const range = require('koa-range');// 静态视频不能拖动进度解决方法，置顶使用koa-range
+const koaStatic = require("koa-static");
+const koaStaticServer = require('koa-static-server')
+
 const app = new Koa();
 
 const controller = require("./controllers"); // const router = require('koa-router')()
@@ -21,10 +24,15 @@ const model = require("./models");
   //一般是单独抽出来成一个指令，项目第一次初始化的时候执行一次，这里就懒得抽，平时用注释切换就行。
 })();
 
+app.use(range);
+
+
 // 静态资源服务
-// 可以同时使用多个koa-static实例去对应多个文件夹（注意多文件夹同文件名问题）
-const staticServe1 = serve(path.join(__dirname,"public"));
-app.use(staticServe1);
+  // 可以同时使用多个koa-static实例去对应多个文件夹（注意多文件夹同文件名问题）
+  // const staticServe1 = koaStatic(path.join(__dirname,"public"));
+  // app.use(staticServe1);
+//也可以使用更好的koa-static-serve
+app.use(koaStaticServer({rootDir: STATICROOTDIR, rootPath: STATICROOTPATH}))//{rootDir: 'web', rootPath: '/web'}
 
 // 文件上传处理中间件
 const koaBody = require("koa-body");
@@ -33,7 +41,7 @@ app.use(
     multipart: true,
     formidable: {
       maxFileSize: 200 * 1024 * 1024, // 设置上传文件大小最大限制，默认2M
-      uploadDir: "public/upload/",
+      uploadDir: UPLOADPATH2.slice(1),//"public/upload"
       // 配置中自带了onFileBegin勾子，但是并不灵活，因为也许不是每个文件都要重命名。
       onFileBegin: (name, file) => {
         // 文件存储之前对文件进行重命名处理
@@ -58,7 +66,7 @@ app.use(timer);
 app.use(last);
 app.use(bodyParser()); //以json形式将非GET类型的请求参数request.body挂载到ctx上
 app.use(controller()); //使用控制器统一管理路由
-app.use(handleStatic(path.join(__dirname,'./public/'),'static'))
+app.use(handleStatic(path.join(__dirname,'./public/'),'staticDir'))
 app.listen(process.env.PORT||8000);
 
 require('./utils/blessMe')
