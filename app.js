@@ -12,7 +12,7 @@ const koaStaticServer = require('koa-static-server')
 const app = new Koa();
 
 const controller = require("./controllers"); // const router = require('koa-router')()
-const { last, log, timer } = require("./middleware");
+const { last, log, timer ,errHandle} = require("./middleware");
 
 // 数据库同步
 const model = require("./models");
@@ -26,6 +26,7 @@ const model = require("./models");
 
 app.use(range);
 
+app.use(errHandle)
 
 // 静态资源服务
   // 可以同时使用多个koa-static实例去对应多个文件夹（注意多文件夹同文件名问题）
