@@ -13,7 +13,7 @@ global.PAGESIZE = 10;
 global.PAGENUMBER = 1;
 
 global.STATICROOTDIR='public';//对内目录
-global.STATICROOTPATH='/static';//对外目录
+global.STATICROOTPATH='/static2';//对外目录
 checkDirExist(path.resolve(STATICROOTDIR))
 
 global.UPLOADPATH=path.resolve(`${STATICROOTDIR}/upload`);
