@@ -1,18 +1,21 @@
 <%- include('public/header.ejs', {pageName: null}); %>
 
 <body>
-  <h4>
-    <a href="/">增删改查demo</a>
+  <div id=app style="margin: 20px auto;max-width:750px">
+    <h1 style="margin-bottom: 20px;">
+      <a href="/">增删改查demo</a>
     <span>文件上传demo</span>
-  </h4>
-  <h5>（前端监听，非后台返回）</h5>
-  <input type="file" name="file" multiple id="file">
-  <button onclick="uploadFiles()">提交</button>
-  <br>
-  <br>
-  <br>
+    </h1>
+    <br>
+    <!-- <h2 style="margin-bottom: 20px;">（进度前端监听，非后台返回）</h2> -->
+    <div style="margin-bottom: 20px">
+      <input type="file" name="file" multiple id="file">
+      <button onclick="uploadFiles()">提交</button>
+    </div>
+  </div>
   <script>
     let $files = document.querySelector('#file')
+    let $app = document.querySelector('#app')
 
     function uploadFiles() {
       let files = $files.files //web端的 files是 FileList类型的类数组对象，循环需要转换成数组
@@ -66,8 +69,8 @@
           $showProgress = document.createElement('div')
           $br = document.createElement('br')
           $showProgress.setAttribute("id", randomId);
-          document.body.appendChild($showProgress)
-          document.body.appendChild($br)
+          $app.appendChild($showProgress)
+          $app.appendChild($br)
         }
         var percentComplete = name + "  ======>  " + (event.loaded / event.total * 100).toFixed(2) + '%';
         console.log(name, percentComplete)
