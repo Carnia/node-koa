@@ -2,9 +2,14 @@
 
 <body>
   <style>
+    .dn{
+        display: none;
+    }
     .wrap{
     }
     .info{
+      font-size: 18px;
+      color: #999;
       padding: 10px;
       margin-top: 10px;
     }
@@ -16,18 +21,100 @@
       width: 100%;
       height: auto;
     }
+    .btnWrapper{
+      display: flex;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    .button{
+      flex: 1;
+      height: 48px;
+      margin: 0 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 4px;
+      box-shadow: 1px 1px 4px #333333;
+    }
+    .button.active{
+      background-color: #999;
+      color: #fff
+    }
   </style>
-  <div class="wrap">
-    <p class='info'>
-      介绍这些事并非针对任何人或者事物，只是让观看者了解某些可能不完整的事实。视频内的内容也需要自己理性判断，因为视频的制作者也可能对真相了解的并不完整。
-    </p>
-    <h3>1、六四事件：广场备忘录</h3>
-    <video src="http://3.112.154.201:9000/static/upload/2019069/111.mp4" controls></video>
-    <h3>2、改革开放中的邓小平：六四事件、经济奇迹与牛角面包</h3>
-    <video src="http://3.112.154.201:9000/static/upload/2019069/222.mp4" controls></video>
-    <h3>3、江泽民与华莱士谈笑风生</h3>
-    <video src="http://3.112.154.201:9000/static/upload/2019069/333.mp4" controls></video>
+  <div class="wrap ">
+    <div class='info'>
+      ·介绍这些事并非针对任何人或者事物，只是让观看者了解某些可能不完整的事实。
+      <br>
+      ·视频的内容请自行理性判断，因为视频的制作者也未必完全知情或者客观。
+      <br>
+      ·开始前请先看一个段子：
+      <div style='font-size:14px;margin-top:5px;padding-left: 10px;'>
+          东关村的老王去西瓜村卖掺假大麻，被人发现打断了腿回来了，老王准备找人打回去。
+        <br><b>西瓜村明报：</b>东关村假货倾销，急需要保护本村经济！
+        <br><b>西瓜村盆钵社：</b>需要随时警惕东关村的经济反制！
+        <br><b>东关村日报</b>：西瓜村霸权欺人！动用军队打伤本村商人！
+        <br><b>东关村经济报：</b>西瓜村经济封锁，禁止别村人员合法经商！
+        </div>
+    </div>
+    
+    <p style="margin: 10px 0 10px 10px">确认要查看请：<b>手动点击</b>下方按钮↓↓↓ 自行切换<br>由于众所周知的原因，点击后可能会卡顿，请稍等</p>
+    <div class="btnWrapper">
+      <div class="button" data-target="six4">64学运</div>
+      <div class="button" data-target="obj2">2019-6-12 香港引渡协议</div>
+    </div>
+    <div id="six4" class="content"></div>
+    <div id="obj2" class='content'></div>
   </div>
+  <script>
+      let data={
+        six4:[`
+        <h2>64学运</h2>
+        <p>至今没有官方表态，主要分两派观点：1、中共残暴镇压。2、美国花钱请托暴动，中国政府被迫镇压场外人士</p>
+        <h3>1、六四事件：广场备忘录</h3>
+        <video src="http://3.112.154.201:9000/static/upload/2019069/111.mp4" controls></video>
+        `,`
+        <h3>2、政治揭露 六四暴動三十年,真相仍被美狗掩蓋 李卓人當年帶千萬上京搞暴動,今日搖尾見美爹</h3>
+        <video src="http://3.112.154.201:9000/static/upload/20190612/555.mp4" controls></video>
+        <h3>3、改革开放中的邓小平：六四事件、经济奇迹与牛角面包</h3>
+        <video src="http://3.112.154.201:9000/static/upload/2019069/222.mp4" controls></video>
+        <h3>4、邓小平谈6.4事件时很自信很坚定很有魄力很伟大.无可争议的一代伟人.绝对的革命猛男.</h3>
+        <video src="http://3.112.154.201:9000/static/upload/20190612/444.mp4" controls></video>
+        <h3>5、江泽民与华莱士谈笑风生</h3>
+        <video src="http://3.112.154.201:9000/static/upload/2019069/333.mp4" controls></video>
+        `],
+        obj2:[`
+        <h2>香港引渡协议</h2>
+        <p>主要分两派观点：1、中共曾经承诺50年不动香港法治自治，引渡协议打破承诺，中共失信，香港失去国际身份和内地城市一样失去优势，并且异见人士随时被中共戴帽子抓走；2、第一条子虚乌有，中共政府不会随意插手香港法治自治，也不会用此打压异见人士。</p>
+        <h3>1、【移交逃犯‧2D睇】4分鐘懶人包圖解修例 市民隨時送內地受審？</h3>
+        <video src="http://3.112.154.201:9000/static/upload/20190612/obj2-1.mp4" controls></video>
+        `,`
+        <h3>2、逃犯條例：彭定康解釋為什麼不能把香港當為普通中國城市對待 － BBC News 中文</h3>
+        <video src="http://3.112.154.201:9000/static/upload/20190612/obj2-2.mp4" controls></video>
+        <h3>3、香港反引渡游行：非理性引发的混乱</h3>
+        <video src="http://3.112.154.201:9000/static/upload/20190612/obj2-3.mp4" controls></video>
+        `],
+      }
+      let $btns=document.querySelectorAll('.button')
+      let $contents=document.querySelectorAll('.content')
+      $btns.forEach((e)=>{
+        e.addEventListener('click',()=>{
+          $btns.forEach(v=>v.classList.remove('active'))
+          e.classList.add('active')
+          $contents.forEach(v=>v.classList.add('dn'))
+          let target='#'+e.dataset.target
+          let $target=document.querySelector(target)
+          if($target.innerHTML.trim()!==''){
+            $target.classList.remove('dn')
+            return
+          }else{
+            $target.innerHTML=data[e.dataset.target][0]
+            document.querySelector(target+' video').oncanplay=()=>{
+                $target.classList.remove('dn')
+                $target.innerHTML+=data[e.dataset.target][1]
+            }
+          }
+          
+        })
+      })
+  </script>
 </body>
-
-</html>

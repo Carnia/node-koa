@@ -1,7 +1,7 @@
 
 let video_list=async (ctx,next)=>{
-  await ctx.render("video",{pageName:'six-four'});
+  await ctx.render("video",{pageName:'something'});
 }
 module.exports = {
-  'GET /video/64':video_list
+  'GET /video/st':video_list
 }
