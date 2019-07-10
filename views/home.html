@@ -1,13 +1,21 @@
-<%- include('public/header.ejs', {pageName: null}); %>
+<%- include('public/header.ejs', {pageName: 'node-koa2-mysql demo'}); %>
 
 <body>
   <script src=https://unpkg.com/art-template@4.13.2/lib/template-web.js> </script> 
+  <style>
+    .tdu{
+      text-decoration: underline
+    }
+  </style>
   <div style="margin: 20px auto;max-width:750px">
     <h1 style="margin-bottom: 20px;">
       <span>1、增删改查demo</span><br>
       <a href="/file">2、文件上传demo</a><br>
       <a href="/staticDir">3、静态文件服务器</a>
     </h1>
+     <div style="margin-bottom: 20px;font-size: 18px;">
+      <p>这是一个用node-pm2-koa2-ejs-mysql-nginx搭建的CRUD的完整功能版demo，CSS方面请参看其他：<a class="tdu" href=/react>React demo</a> 、 <a class="tdu" href=/angular>angular demo</a></p>
+    </div>
     <div style="margin-bottom: 20px;">
       <input type=text id=input1 placeholder=搜索email或者姓名 />
       <label for="p">选择页码</label>
@@ -25,9 +33,9 @@
       <button id=btn>查询</button>
     </div>
     <div style="margin-bottom: 20px;font-size: 18px;">
-      <span>URL query: </span> <a href="/?p=2&s=20">/?p=2&s=20</a>
+      <span>URL query: </span> <a class="tdu" href="/?p=2&s=20">/?p=2&s=20</a>
       <br>
-      <span>URL query: </span> <a href="/?p=1&s=100">/?p=1&s=100</a>
+      <span>URL query: </span> <a class="tdu" href="/?p=1&s=100">/?p=1&s=100</a>
     </div>
     <div id=result style="display: flex;">
       <table border="1" cellspacing="0" cellpadding="8" style='font-size:18px;text-align: center'>
