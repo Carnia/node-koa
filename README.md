@@ -2,7 +2,7 @@
 
 ## mysql
 mysql需要初始化
-服务器装好mysql服务后，要用mysql_secure_installation配置,在配置过程中，设置mysql的用户：root，密码为123(因为node-koa中初始化用的就是这个账户)。
+服务器装好mysql服务后，要用`mysql_secure_installation`配置,在配置过程中，设置mysql的用户：root，密码为123(因为node-koa中初始化用的就是这个账户)。
 ```bash
   #1
   VALIDATE PASSWORD PLUGIN can be used to test passwords...
